@@ -84,8 +84,7 @@ function update_page() {
 
 // ================ EVENTS ==========================
 roll_button.addEventListener("click", function () {
-    let num_dice_rolls = dice_input.value;
-    roll_dice(num_dice_rolls, die_rolls);
+    roll_dice(dice_input.value, die_rolls);
     update_page();
 });
 
