@@ -6,6 +6,7 @@ array, and displays the total of the array along with each individual
 index of the array.
 */
 
+// ================ VARIABLES ==========================
 let die_rolls = [];
 
 const dice_input = document.querySelector("#dice-input");
@@ -15,6 +16,8 @@ const all_rolls_button = document.querySelector("#all-rolls-button");
 const all_rolls_list = document.querySelector("#all-rolls");
 
 const total = document.querySelector("#total");
+
+// ================ FUNCTIONS ==========================
 
 function dice() {
     return Math.floor(Math.random()*6)+1;
@@ -28,10 +31,6 @@ function roll_dice(numRolls, dice_array) {
         roll_dice(numRolls - 1, dice_array);
     }
 };
-
-function clear_list(li) {
-    li.innerHTML = "";
-}
 function visualizeDice(value) {
     switch(value) {
         case 1:
@@ -54,6 +53,10 @@ function append_li(value, list) {
     list.appendChild(li);
 }
 
+function clear_list(li) {
+    li.innerHTML = "";
+}
+
 function toggle_hidden(element) {
     if (element.hidden) {
         element.hidden = false;
@@ -63,15 +66,23 @@ function toggle_hidden(element) {
 };
 
 function update_page() {
-    let sum = 0;
     clear_list(all_rolls_list);
-    for (const roll of die_rolls) {
-        append_li(roll, all_rolls_list);
-        sum += roll;
-    };
+
+    function updater(sum, index){
+        if (index >= die_rolls.length) {
+            return sum
+        } else {
+            append_li(die_rolls[index], all_rolls_list);
+            return updater(sum += die_rolls[index], index + 1)
+        }
+    }
+
+    let sum = updater(0, 0)
     total.innerHTML = "Total: " + sum;
 };
 
+
+// ================ EVENTS ==========================
 roll_button.addEventListener("click", function () {
     let num_dice_rolls = dice_input.value;
     roll_dice(num_dice_rolls, die_rolls);
